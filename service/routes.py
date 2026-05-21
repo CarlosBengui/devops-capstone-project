@@ -9,7 +9,6 @@ from service.models import Account
 from service.common import status  # HTTP Status Codes
 from . import app  # Import Flask application
 
-
 ############################################################
 # Health Endpoint
 ############################################################
@@ -17,7 +16,6 @@ from . import app  # Import Flask application
 def health():
     """Health Status"""
     return jsonify(dict(status="OK")), status.HTTP_200_OK
-
 
 ######################################################################
 # GET INDEX
@@ -34,16 +32,11 @@ def index():
         status.HTTP_200_OK,
     )
 
-
 ######################################################################
 # CREATE A NEW ACCOUNT
 ######################################################################
 @app.route("/accounts", methods=["POST"])
 def create_accounts():
-    """
-    Creates an Account
-    This endpoint will create an Account based the data in the body that is posted
-    """
     app.logger.info("Request to create an Account")
     check_content_type("application/json")
     account = Account()
@@ -64,12 +57,10 @@ def create_accounts():
 def list_accounts():
     """Returns all Accounts"""
     app.logger.info("Request to list all Accounts")
-
     accounts = Account.all()
     results = [account.serialize() for account in accounts]
 
     return jsonify(results), status.HTTP_200_OK
-
 
 ######################################################################
 # READ AN ACCOUNT
@@ -86,7 +77,6 @@ def read_accounts(account_id):
 
     return jsonify(account.serialize()), status.HTTP_200_OK
 
-
 ######################################################################
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################
@@ -94,9 +84,7 @@ def read_accounts(account_id):
 def update_accounts(account_id):
     """Update an Account"""
     app.logger.info("Request to update an Account with id [%s]", account_id)
-
     check_content_type("application/json")
-
     account = Account.find(account_id)
 
     if not account:
@@ -105,9 +93,7 @@ def update_accounts(account_id):
     account.deserialize(request.get_json())
     account.id = account_id
     account.update()
-
     return jsonify(account.serialize()), status.HTTP_200_OK
-
 
 ######################################################################
 # DELETE AN ACCOUNT
@@ -123,7 +109,6 @@ def delete_accounts(account_id):
         account.delete()
 
     return make_response("", status.HTTP_204_NO_CONTENT)
-
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
